@@ -1,0 +1,7 @@
+.link-container {
+    margin-top: 10px; /* 원하는 만큼의 간격을 설정하세요 */
+}
+
+.signup-link, .home-link {
+    margin-right: 10px; /* 각 링크 사이의 간격을 설정하세요 */
+}
