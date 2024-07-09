@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Mainpage from './components/js/Mainpage';
 import Login from './components/js/Login';
-import Chat from './components/js/Chat';
+import Chat from './components/js/Chat.jsx';
 import './App.css';
 
 function App() {
