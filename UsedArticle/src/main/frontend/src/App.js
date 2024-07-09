@@ -4,6 +4,7 @@ import Mainpage from './components/js/Mainpage';
 import Login from './components/js/Login';
 import SignUp from './components/js/SignUp';
 import './App.css';
+import Chat from './components/js/Chat.jsx';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
             <Route path="/" element={<Mainpage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/chat" element={<Chat />} />
           </Routes>
         </main>
       </div>
