@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Mainpage from './components/js/Mainpage';
 import Login from './components/js/Login';
-import Chat from './components/js/Chat.jsx';
+import SignUp from './components/js/SignUp';
 import './App.css';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Mainpage />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
         </main>
       </div>

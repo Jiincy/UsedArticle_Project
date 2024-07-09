@@ -1,21 +1,41 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/Login.css';
 
-const Login = () => {
+const Login = ({ setIsLoggedIn }) => {
     const [loginId, setLoginId] = useState('');
     const [pw, setPw] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // 여기에 로그인 처리 로직을 추가하세요.
-        console.log(`로그인 시도 - 아이디: ${loginId}, 비밀번호: ${pw}`);
+
+        try {
+            const formData = {
+                userId: loginId,
+                userPw: pw
+            };
+
+            const response = await axios.post('http://localhost:8787/api/login', formData);
+            console.log('로그인 성공:', response.data);
+
+            // 세션 스토리지에 사용자 정보 저장
+            sessionStorage.setItem('loginId', response.data.userId);
+            sessionStorage.setItem('email', response.data.userEmail);
+            sessionStorage.setItem('tel', response.data.userTel);
+            sessionStorage.setItem('userNo', response.data.userNo);
+            setIsLoggedIn(true);
+            navigate('/');
+        } catch (error) {
+            console.error('로그인 실패:', error);
+            setError('아이디 또는 비밀번호가 일치하지 않습니다.');
+        }
     };
 
     return (
         <div>
-
             <div className="login-container">
                 <h2>로그인</h2>
                 {error && <div>{error}</div>}
@@ -43,11 +63,9 @@ const Login = () => {
                     <button type="submit">로그인</button>
                 </form>
                 <div className="link-container">
-                                   <Link to="/signup" className="signup-link">회원가입</Link>
-                                   <Link to="/" className="home-link">홈으로 가기</Link>
-                               </div>
+                    <Link to="/" className="home-link">홈으로 가기</Link>
+                </div>
             </div>
-
         </div>
     );
 };
