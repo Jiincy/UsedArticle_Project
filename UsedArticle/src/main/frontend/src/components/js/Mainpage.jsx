@@ -17,6 +17,9 @@ const Mainpage = ({ isLoggedIn }) => {
           <Link to="/signup">회원가입</Link>
         </div>
       )}
+      <Link to="/login">로그인</Link>
+      <Link to="/signup">회원가입</Link>
+      <Link to="/Chat">채팅</Link>
     </div>
   );
 };
