@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Param;
 public interface UserMapper {
     void insertUser(@Param("user") User user);
 
-    User checkLogin(@Param("userId") String userId, @Param("userPw") String userPw);
+    User findByLoginIdAndPassword(@Param("userId") String userId, @Param("userPw") String userPw);
 }
