@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class User {
     private  String id;
     private String userId;
@@ -17,4 +16,9 @@ public class User {
     private String userAddr;
     private LocalDateTime userReg;
     private String userYn;
+
+    public User(String userId, String userPw) {
+        this.userId = userId;
+        this.userPw = userPw;
+    }
 }

@@ -8,18 +8,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     @Autowired
-    private UserMapper userMapper;
+    private final UserMapper userMapper;
 
+    public UserService(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
     public void signUp(User user) {
         userMapper.insertUser(user);
     }
 
-//    public boolean login(User user) {
-//        int count = userMapper.checkLogin(user.getUserId(), user.getUserPw());
-//        return count == 1; // 로그인 성공 여부를 true/false로 반환
-//    }
-
     public User login(String userId, String userPw) {
-        return userMapper.checkLogin(userId, userPw);
+        return userMapper.findByLoginIdAndPassword(userId, userPw);
     }
+
 }
