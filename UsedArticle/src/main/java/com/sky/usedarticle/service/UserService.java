@@ -7,12 +7,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired
     private final UserMapper userMapper;
 
+    @Autowired
     public UserService(UserMapper userMapper) {
         this.userMapper = userMapper;
     }
+
     public void signUp(User user) {
         userMapper.insertUser(user);
     }
@@ -21,4 +22,12 @@ public class UserService {
         return userMapper.findByLoginIdAndPassword(userId, userPw);
     }
 
+    public User updateUser(User user) {
+        userMapper.updateUser(user);
+        return userMapper.findById(user.getId());
+    }
+
+    public void deleteUser(String userId) {
+        userMapper.deleteUser(userId);
+    }
 }
