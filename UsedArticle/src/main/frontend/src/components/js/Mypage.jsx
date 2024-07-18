@@ -29,23 +29,33 @@ const Mypage = ({ user, setUser, setIsLoggedIn }) => {
     try {
       const response = await axios.put('http://localhost:8787/api/user', userInfo, { withCredentials: true });
       setUser(response.data);
-      setUserInfo(response.data);
       setEditing(false);
     } catch (error) {
       console.error('정보 수정 실패:', error);
     }
   };
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete('http://localhost:8787/api/user', { withCredentials: true });
-      setUser(null);
-      setIsLoggedIn(false);
-      navigate('/login');
-    } catch (error) {
-      console.error('계정 삭제 실패:', error);
+const handleDelete = async () => {
+  try {
+    console.log('Attempting to delete user...'); // 디버깅 메시지 추가
+    await axios.delete('http://localhost:8787/api/user', { withCredentials: true });
+    setUser(null);
+    setIsLoggedIn(false);
+    navigate('/login');
+    console.log('User deleted and navigated to login.'); // 디버깅 메시지 추가
+  } catch (error) {
+    // 디버깅 메시지 추가
+    console.error('계정 삭제 실패:', error.response ? error.response.data : error.message);
+    alert('계정 삭제 실패: ' + (error.response ? error.response.data : error.message));
+  }
+};
+
+
+  useEffect(() => {
+    if (user) {
+      setUserInfo(user);
     }
-  };
+  }, [user]);
 
   if (!userInfo) {
     return <div>로딩 중...</div>;

@@ -31,7 +31,7 @@
     </update>
 
     <delete id="deleteUser" parameterType="String">
-        DELETE FROM user
-        WHERE user_id = #{userId}
+        DELETE FROM user WHERE user_id = #{userId}
     </delete>
+
 </mapper>

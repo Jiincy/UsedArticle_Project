@@ -60,10 +60,23 @@ public class UserController {
     public void deleteUser(HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
-            userService.deleteUser(loggedInUser.getId());
-            session.invalidate();
+            try {
+                System.out.println("User found in session: " + loggedInUser.getUserId()); // 디버깅 메시지 추가
+                userService.deleteUser(loggedInUser.getUserId());
+                session.invalidate();
+                System.out.println("Session invalidated and user deleted."); // 디버깅 메시지 추가
+            } catch (Exception e) {
+                // 디버깅 메시지 추가
+                System.err.println("계정 삭제 중 오류 발생: " + e.getMessage());
+                e.printStackTrace();  // 스택 추적 출력
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 삭제 중 오류 발생", e);
+            }
         } else {
+            System.err.println("No user found in session."); // 디버깅 메시지 추가
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 세션이 만료되었습니다.");
         }
     }
+
+
+
 }

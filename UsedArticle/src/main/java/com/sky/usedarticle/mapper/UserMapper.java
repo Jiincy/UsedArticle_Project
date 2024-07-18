@@ -10,9 +10,10 @@ public interface UserMapper {
 
     User findByLoginIdAndPassword(@Param("userId") String userId, @Param("userPw") String userPw);
 
-    User findById(@Param("id") String id);
+    User findById(@Param("userId") String userId);  // 수정된 부분
 
     void updateUser(User user);
 
-    void deleteUser(@Param("id") String id);
+    void deleteUser(@Param("userId") String userId);
 }
+
