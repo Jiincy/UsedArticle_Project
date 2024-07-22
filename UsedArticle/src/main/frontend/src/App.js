@@ -1,28 +1,51 @@
-import React, { useState } from 'react'; // useState를 import 추가
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+// App.jsx
+import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Mainpage from './components/js/Mainpage';
 import Login from './components/js/Login';
 import SignUp from './components/js/SignUp';
-import './App.css';
 import Chat from './components/js/Chat.jsx';
+import Chating from './components/js/Chating.jsx';
 import Mypage from './components/js/Mypage.jsx';
+import UserSearch from './components/js/UserSearch.jsx';
+import Navbar from './components/js/Navbar';
+import Footer from './components/js/Footer';
+import './App.css';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // useState를 사용하여 상태 설정
-  const [user, setUser] = useState(null); // 사용자 정보를 관리하는 상태
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedIsLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (storedIsLoggedIn) {
+      setIsLoggedIn(true);
+      // Fetch user data if needed
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    setUser(null);
+  };
 
   return (
     <Router>
       <div className="App">
+        <Navbar isLoggedIn={isLoggedIn} onLogout={handleLogout} user={user} />
         <main>
           <Routes>
-            <Route path="/" element={<Mainpage isLoggedIn={isLoggedIn} onLogout={() => { setIsLoggedIn(false); setUser(null); }} />} />
+            <Route path="/" element={<Mainpage isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/chat" element={<Chat />} />
-            <Route path="/mypage" element={<Mypage user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} />} />
+            <Route path="/chating" element={isLoggedIn ? <Chating isLoggedIn={isLoggedIn} /> : <Navigate to="/login" />} />
+            <Route path="/mypage" element={isLoggedIn ? <Mypage user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />
+            <Route path="/usersearch" element={<UserSearch />} />
           </Routes>
         </main>
+        <Footer />
       </div>
     </Router>
   );

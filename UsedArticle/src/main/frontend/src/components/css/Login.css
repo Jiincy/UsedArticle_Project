@@ -1,7 +1,60 @@
-.link-container {
-    margin-top: 10px; /* 원하는 만큼의 간격을 설정하세요 */
+/* 로그인 화면의 상단 여백을 네비게이션 바의 높이에 맞게 설정 */
+.login-container {
+  margin-top: 40px; /* 네비게이션 바의 높이에 맞게 조정 */
+  padding: 20px; /* 콘텐츠 패딩 추가 */
+  max-width: 400px; /* 콘텐츠 너비 제한 */
+  margin-left: auto;
+  margin-right: auto; /* 화면 중앙에 정렬 */
+}
+
+h2 {
+  text-align: center; /* 제목을 중앙 정렬 */
+  margin-bottom: 0px; /* 제목과 폼 사이의 여백 조정 */
+}
+
+form {
+  display: flex;
+  flex-direction: column; /* 입력 필드와 버튼을 세로로 정렬 */
+  gap: 10px; /* 입력 필드와 버튼 사이의 여백 추가 */
+}
+
+div {
+  margin-bottom: 10px; /* 입력 필드와 라벨 사이의 여백 조정 */
+}
+
+label {
+  display: block; /* 라벨을 블록으로 설정하여 줄바꿈 추가 */
+  margin-bottom: 5px; /* 라벨과 입력 필드 사이에 여백 추가 */
+}
+
+input {
+  width: 100%; /* 입력 필드 너비를 100%로 설정 */
+  padding: 8px; /* 입력 필드 내 여백 추가 */
+  border: 1px solid #ccc; /* 입력 필드 테두리 색상 */
+  border-radius: 4px; /* 입력 필드 테두리 둥글게 처리 */
+}
+
+button {
+  padding: 10px; /* 버튼 내 여백 추가 */
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff; /* 버튼 배경색 */
+  color: white; /* 버튼 글자 색상 */
+  cursor: pointer; /* 버튼에 커서 포인터 추가 */
+}
+
+button:hover {
+  background-color: #0056b3; /* 버튼 호버 시 배경색 */
 }
 
 .signup-link, .home-link {
-    margin-right: 10px; /* 각 링크 사이의 간격을 설정하세요 */
+  display: block; /* 링크를 블록으로 설정하여 줄바꿈 추가 */
+  text-align: center; /* 링크 텍스트를 중앙 정렬 */
+  margin-top: 10px; /* 링크 사이에 여백 추가 */
+  color: #007bff; /* 링크 색상 */
+  text-decoration: none; /* 링크 밑줄 제거 */
+}
+
+.signup-link:hover, .home-link:hover {
+  text-decoration: underline; /* 링크 호버 시 밑줄 추가 */
 }

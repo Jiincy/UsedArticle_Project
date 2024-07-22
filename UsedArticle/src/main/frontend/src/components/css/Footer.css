@@ -1,0 +1,93 @@
+/* 푸터 전체 스타일 */
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  padding: 10px 0; /* 푸터 안쪽 여백 */
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* 미세한 그림자 추가 */
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  justify-content: space-between; /* 좌우 정렬 */
+}
+
+.footer-left, .footer-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+.footer-left {
+  text-align: center;
+}
+
+.footer-right {
+  text-align: right;
+}
+
+.footer-content {
+  color: #6c757d; /* 회색 텍스트 색상 */
+}
+
+.footer-content p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+}
+
+.footer-links li {
+  display: inline;
+  margin: 0 10px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: #007bff; /* 버튼 색상과 동일 */
+  font-size: 0.9rem;
+}
+
+.footer-links a:hover {
+  text-decoration: underline; /* 호버 시 밑줄 */
+}
+
+/* 추가된 스타일 */
+.footer-extra {
+  margin-top: 20px; /* 상단 여백 */
+}
+
+.footer-extra p {
+  font-size: 0.8rem; /* 작은 폰트 사이즈 */
+}
+
+.footer-social {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+}
+
+.footer-social li {
+  display: inline;
+  margin: 0 10px;
+}
+
+.footer-social a {
+  text-decoration: none;
+  color: #007bff; /* 버튼 색상과 동일 */
+  font-size: 0.9rem;
+}
+
+.footer-social a:hover {
+  text-decoration: underline; /* 호버 시 밑줄 */
+}

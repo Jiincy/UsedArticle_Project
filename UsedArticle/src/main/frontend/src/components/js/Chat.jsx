@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useParams } from 'react-router-dom';
 import '../css/Chat.css';
 
 const Chat = () => {
+    const { userId } = useParams(); // URL에서 userId를 가져옴
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isConnected, setIsConnected] = useState(false);
     const socketRef = useRef(null);
 
     useEffect(() => {
-        socketRef.current = new WebSocket('ws://localhost:8787/chat');
+        socketRef.current = new WebSocket(`ws://localhost:8787/chat/${userId}`);
 
         socketRef.current.onopen = () => {
             setIsConnected(true);
@@ -29,7 +31,7 @@ const Chat = () => {
         return () => {
             socketRef.current.close();
         };
-    }, []);
+    }, [userId]);
 
     const sendMessage = () => {
         if (socketRef.current && isConnected && input) {

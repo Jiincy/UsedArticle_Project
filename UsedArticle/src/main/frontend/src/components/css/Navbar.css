@@ -1,0 +1,81 @@
+/* 네비게이션 바 전체 스타일 */
+.navbar {
+  width: 100%; /* 전체 너비 */
+  background-color: rgba(255, 255, 255, 0.9); /* 투명한 배경 색상 */
+  padding: 5px 10px; /* 패딩 조정 */
+  position: fixed; /* 화면 상단에 고정 */
+  top: 0; /* 화면 상단에 위치 */
+  left: 0; /* 화면 왼쪽에 위치 */
+  z-index: 1000; /* 다른 요소들 위에 표시되도록 설정 */
+  backdrop-filter: blur(8px); /* 배경 흐림 효과 */
+  border-bottom: 1px solid #d3d3d3; /* 옅은 회색 하단 테두리 */
+}
+
+/* 네비게이션 바 내부 컨테이너 스타일 */
+.navbar-container {
+  max-width: 1200px; /* 최대 너비 설정 */
+  margin: 0 auto; /* 중앙 정렬 */
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  justify-content: space-between; /* 좌측과 우측 요소 정렬 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+/* 네비게이션 바 좌측 스타일 */
+.navbar-left {
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  align-items: center; /* 수직 중앙 정렬 */
+}
+
+/* 네비게이션 바 홈 아이콘 스타일 */
+.navbar-home-icon img {
+  width: 60px; /* 이미지 너비 */
+  height: 60px; /* 이미지 높이 */
+  object-fit: contain; /* 이미지 비율 유지 */
+    margin: 0; /* 이미지 주위 여백 제거 */
+      vertical-align: middle; /* 수직 중앙 정렬 */
+
+}
+
+/* 네비게이션 바 링크 및 버튼 스타일 */
+.navbar-links {
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  gap: 15px; /* 링크 사이 간격 */
+}
+
+/* 네비게이션 바 링크 스타일 */
+.navbar-link, .navbar-button {
+  color: black; /* 링크와 버튼 텍스트 색상 */
+  text-decoration: none; /* 기본 밑줄 제거 */
+  font-size: 0.9rem; /* 글자 크기 */
+  padding: 8px 15px; /* 패딩 조정 */
+  border-radius: 5px; /* 링크와 버튼의 둥근 모서리 */
+  transition: background-color 0.3s ease, color 0.3s ease; /* 배경색과 텍스트 색상 변경 시 부드러운 전환 효과 */
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  align-items: center; /* 수직 중앙 정렬 */
+  justify-content: center; /* 수평 중앙 정렬 */
+}
+
+/* 호버 시 링크와 버튼의 배경 색상 및 텍스트 색상 변경 */
+.navbar-link:hover, .navbar-button:hover {
+  background-color: rgba(200, 200, 200, 0.8); /* 호버 시 배경색 */
+  color: #000; /* 호버 시 텍스트 색상 */
+}
+
+/* 네비게이션 바 버튼 스타일 */
+.navbar-button {
+  background-color: transparent; /* 투명한 배경 */
+  border: none; /* 테두리 없음 */
+  cursor: pointer; /* 커서 모양을 손가락 모양으로 변경 */
+  text-decoration: underline; /* 텍스트에 밑줄 추가 */
+}
+
+/* 네비게이션 바 사용자 정보 스타일 */
+.navbar-user {
+  margin-right: -20px; /* 오른쪽 여백 */
+  font-weight: bold; /* 글자를 굵게 */
+  color: #333; /* 텍스트 색상 */
+  padding: 0 15px; /* 좌우 패딩 추가 */
+  line-height: 60px; /* 네비게이션 바 높이에 맞게 텍스트 수직 중앙 정렬 */
+  display: flex; /* 플렉스 박스 레이아웃 사용 */
+  align-items: center; /* 수직 중앙 정렬 */
+}

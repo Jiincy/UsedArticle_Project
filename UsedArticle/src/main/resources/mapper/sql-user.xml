@@ -34,4 +34,10 @@
         DELETE FROM user WHERE user_id = #{userId}
     </delete>
 
+    <select id="searchUsers" parameterType="String" resultType="com.sky.usedarticle.dto.User">
+        SELECT user_no, user_id, user_email, user_tel, user_addr, user_reg, user_yn
+        FROM user
+        WHERE user_id = #{keyword}
+    </select>
+
 </mapper>

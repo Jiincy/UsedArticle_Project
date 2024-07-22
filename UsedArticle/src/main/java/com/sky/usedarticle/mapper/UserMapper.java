@@ -3,6 +3,9 @@ package com.sky.usedarticle.mapper;
 import com.sky.usedarticle.dto.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
 
 @Mapper
 public interface UserMapper {
@@ -15,5 +18,7 @@ public interface UserMapper {
     void updateUser(User user);
 
     void deleteUser(@Param("userId") String userId);
+
+    List<User> searchUsers(@Param("keyword") String keyword);
 }
 

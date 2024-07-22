@@ -1,0 +1,17 @@
+/* Mainpage.css */
+
+.main-content {
+  padding-top: 100px; /* 네비게이션 바의 높이에 맞게 조절 */
+  text-align: center;
+  background-color: #f4f4f4;
+}
+
+.main-content h2 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.main-content p {
+  font-size: 1.2rem;
+  color: #666;
+}

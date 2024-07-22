@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.usedarticle.mapper.MessageMapper">
+    <insert id="insertMessage" parameterType="com.sky.usedarticle.dto.Message">
+        INSERT INTO message (buyer, seller, product_id, content, type, send_date)
+        VALUES (#{buyer}, #{seller}, #{productId}, #{content}, #{type}, NOW())
+    </insert>
+</mapper>

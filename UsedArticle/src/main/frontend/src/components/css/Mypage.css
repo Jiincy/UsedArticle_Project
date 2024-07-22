@@ -1,0 +1,63 @@
+.mypage-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding-top: 120px; /* 네비게이션 바의 높이에 맞게 조절 */
+}
+
+.mypage-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.mypage-container label {
+  display: block;
+  margin: 10px 0;
+  font-size: 1rem;
+  color: #555;
+}
+
+.mypage-container input {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.mypage-container button {
+  background-color: transparent; /* 배경색 제거 */
+  color: #007bff; /* 버튼 텍스트 색상 */
+  border: 1px solid #007bff; /* 버튼 테두리 색상 */
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px;
+  transition: all 0.3s;
+}
+
+.mypage-container button:hover {
+  background-color: #007bff; /* 호버 시 배경색 */
+  color: white; /* 호버 시 텍스트 색상 */
+}
+
+.mypage-container .cancel-button {
+  color: #ff4d4d; /* 버튼 텍스트 색상 */
+  border-color: #ff4d4d; /* 버튼 테두리 색상 */
+}
+
+.mypage-container .cancel-button:hover {
+  background-color: #ff4d4d; /* 호버 시 배경색 */
+  color: white; /* 호버 시 텍스트 색상 */
+}
+
+.mypage-container .info {
+  margin: 20px 0;
+  font-size: 1.1rem;
+  color: #333;
+}

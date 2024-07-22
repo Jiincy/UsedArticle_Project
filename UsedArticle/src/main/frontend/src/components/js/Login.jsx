@@ -1,10 +1,9 @@
-// Login.js
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../css/Login.css';
+import '../css/Login.css'; // 수정된 CSS 파일 import
 
-const Login = ({ setIsLoggedIn }) => {
+const Login = ({ setIsLoggedIn, setUser }) => {
     const [userId, setUserId] = useState('');
     const [userPw, setUserPw] = useState('');
     const [error, setError] = useState('');
@@ -22,8 +21,9 @@ const Login = ({ setIsLoggedIn }) => {
             if (response.data) {
                 console.log('로그인 성공:', response.data);
 
-                // 여기서 setIsLoggedIn(true);를 호출하여 로그인 상태를 변경합니다.
+                // 로그인 성공 시 상태 업데이트
                 setIsLoggedIn(true);
+                setUser(response.data); // 사용자 정보 설정
 
                 navigate('/');
             } else {
@@ -38,10 +38,11 @@ const Login = ({ setIsLoggedIn }) => {
 
     return (
         <div className="login-container">
-            <h2>로그인</h2>
+
             {error && <div>{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div>
+                    <div><h2>로그인</h2></div>
                     <label htmlFor="userId">아이디:</label>
                     <input
                         type="text"
@@ -62,9 +63,10 @@ const Login = ({ setIsLoggedIn }) => {
                     />
                 </div>
                 <button type="submit">로그인</button>
+                            <Link to="/signup" className="signup-link">회원가입</Link>
+                            <Link to="/" className="home-link">홈으로 가기</Link>
             </form>
-            <Link to="/signup" className="signup-link">회원가입</Link>
-            <Link to="/" className="home-link">홈으로 가기</Link>
+
         </div>
     );
 };

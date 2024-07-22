@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../css/Mypage.css'; // 스타일 파일 임포트
 
 const Mypage = ({ user, setUser, setIsLoggedIn }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -35,21 +36,17 @@ const Mypage = ({ user, setUser, setIsLoggedIn }) => {
     }
   };
 
-const handleDelete = async () => {
-  try {
-    console.log('Attempting to delete user...'); // 디버깅 메시지 추가
-    await axios.delete('http://localhost:8787/api/user', { withCredentials: true });
-    setUser(null);
-    setIsLoggedIn(false);
-    navigate('/login');
-    console.log('User deleted and navigated to login.'); // 디버깅 메시지 추가
-  } catch (error) {
-    // 디버깅 메시지 추가
-    console.error('계정 삭제 실패:', error.response ? error.response.data : error.message);
-    alert('계정 삭제 실패: ' + (error.response ? error.response.data : error.message));
-  }
-};
-
+  const handleDelete = async () => {
+    try {
+      await axios.delete('http://localhost:8787/api/user', { withCredentials: true });
+      setUser(null);
+      setIsLoggedIn(false);
+      navigate('/login');
+    } catch (error) {
+      console.error('계정 삭제 실패:', error.response ? error.response.data : error.message);
+      alert('계정 삭제 실패: ' + (error.response ? error.response.data : error.message));
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -63,58 +60,58 @@ const handleDelete = async () => {
 
   return (
     <div>
-      <h2>마이페이지</h2>
-      {editing ? (
-        <div>
-          <label>
-            이메일:
-            <input
-              type="text"
-              value={userInfo.userEmail}
-              onChange={(e) => setUserInfo({ ...userInfo, userEmail: e.target.value })}
-            />
-          </label>
-          <br />
-          <label>
-            비밀번호:
-            <input
-              type="password"
-              value={userInfo.userPw}
-              onChange={(e) => setUserInfo({ ...userInfo, userPw: e.target.value })}
-            />
-          </label>
-          <br />
-          <label>
-            전화번호:
-            <input
-              type="text"
-              value={userInfo.userTel}
-              onChange={(e) => setUserInfo({ ...userInfo, userTel: e.target.value })}
-            />
-          </label>
-          <br />
-          <label>
-            주소:
-            <input
-              type="text"
-              value={userInfo.userAddr}
-              onChange={(e) => setUserInfo({ ...userInfo, userAddr: e.target.value })}
-            />
-          </label>
-          <br />
-          <button onClick={handleUpdate}>정보 수정</button>
-          <button onClick={() => setEditing(false)}>취소</button>
-        </div>
-      ) : (
-        <div>
-          <p>아이디: {userInfo.userId}</p>
-          <p>이메일: {userInfo.userEmail}</p>
-          <p>전화번호: {userInfo.userTel}</p>
-          <p>주소: {userInfo.userAddr}</p>
-          <button onClick={() => setEditing(true)}>정보 수정</button>
-          <button onClick={handleDelete}>회원 탈퇴</button>
-        </div>
-      )}
+      <div className="mypage-container">
+        <h2>마이페이지</h2>
+        {editing ? (
+          <div>
+            <label>
+              이메일:
+              <input
+                type="text"
+                value={userInfo.userEmail}
+                onChange={(e) => setUserInfo({ ...userInfo, userEmail: e.target.value })}
+              />
+            </label>
+            <label>
+              비밀번호:
+              <input
+                type="password"
+                value={userInfo.userPw}
+                onChange={(e) => setUserInfo({ ...userInfo, userPw: e.target.value })}
+              />
+            </label>
+            <label>
+              전화번호:
+              <input
+                type="text"
+                value={userInfo.userTel}
+                onChange={(e) => setUserInfo({ ...userInfo, userTel: e.target.value })}
+              />
+            </label>
+            <label>
+              주소:
+              <input
+                type="text"
+                value={userInfo.userAddr}
+                onChange={(e) => setUserInfo({ ...userInfo, userAddr: e.target.value })}
+              />
+            </label>
+            <button onClick={handleUpdate}>정보 수정</button>
+            <button className="cancel-button" onClick={() => setEditing(false)}>취소</button>
+          </div>
+        ) : (
+          <div>
+            <div className="info">
+              <p>아이디: {userInfo.userId}</p>
+              <p>이메일: {userInfo.userEmail}</p>
+              <p>전화번호: {userInfo.userTel}</p>
+              <p>주소: {userInfo.userAddr}</p>
+            </div>
+            <button onClick={() => setEditing(true)}>정보 수정</button>
+            <button className="cancel-button" onClick={handleDelete}>회원 탈퇴</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

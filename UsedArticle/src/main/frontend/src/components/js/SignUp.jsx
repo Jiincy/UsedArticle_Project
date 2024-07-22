@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import '../css/SignUp.css'; // 스타일 파일 임포트
 
 function SignUp() {
   const navigate = useNavigate();
@@ -37,11 +38,12 @@ function SignUp() {
   return (
     <form onSubmit={handleSubmit}>
       <div>
-        <label htmlFor="userId">User ID:</label>
+
+        <label htmlFor="userId">ID:</label>
         <input type="text" id="userId" name="userId" value={formData.userId} onChange={handleChange} />
       </div>
       <div>
-        <label htmlFor="userPw">Password:</label>
+        <label htmlFor="userPw">비밀번호:</label>
         <input type="password" id="userPw" name="userPw" value={formData.userPw} onChange={handleChange} />
       </div>
       <div>
@@ -49,11 +51,11 @@ function SignUp() {
         <input type="email" id="userEmail" name="userEmail" value={formData.userEmail} onChange={handleChange} placeholder="예시) example@example.com" />
       </div>
       <div>
-        <label htmlFor="userTel">Phone:</label>
-        <input type="text" id="userTel" name="userTel" value={formData.userTel} onChange={handleChange} />
+        <label htmlFor="userTel">휴대폰 번호:</label>
+        <input type="text" id="userTel" name="userTel" value={formData.userTel} onChange={handleChange}placeholder="예시) 000-1234-5678" />
       </div>
       <div>
-        <label htmlFor="userAddr">Address:</label>
+        <label htmlFor="userAddr">주소:</label>
         <input type="text" id="userAddr" name="userAddr" value={formData.userAddr} onChange={handleChange} />
       </div>
       <button type="submit">Sign Up</button>
