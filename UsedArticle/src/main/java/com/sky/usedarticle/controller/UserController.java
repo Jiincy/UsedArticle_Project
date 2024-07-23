@@ -37,6 +37,7 @@ public class UserController {
         session.invalidate();
     }
 
+
     @GetMapping("/user")
     public User getUser(HttpSession session) {
         User user = (User) session.getAttribute("loggedInUser");
