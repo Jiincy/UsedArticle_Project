@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.usedarticle.mapper.ProductMapper">
+
+    <select id="getAllProducts" resultType="com.sky.usedarticle.dto.Product">
+            SELECT
+        product_id,
+        user_no,
+        product_name,
+        product_price,
+        product_category,
+        product_info,
+        product_condition,
+        product_change,
+        product_date,
+        product_update_date,
+        product_delivery_free,
+        product_like,
+        product_addr,
+        product_status
+            FROM Product
+
+    </select>
+
+
+
+</mapper>

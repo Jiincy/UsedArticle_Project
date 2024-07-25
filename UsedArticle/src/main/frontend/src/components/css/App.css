@@ -14,7 +14,27 @@ html, body {
 /* main 영역을 flex로 설정하여 푸터를 하단에 고정 */
 main {
   flex: 1;
-  padding-bottom: 60px; /* 푸터의 높이만큼 여백 추가 */
+  padding-bottom: 60px; /* 푸터의 높이와 동일한 여백 추가 */
+  box-sizing: border-box; /* 패딩이 콘텐츠 영역에 포함되도록 설정 */
+}
+
+/* 상품 리스트 스타일 */
+.product-list {
+  padding: 20px;
+  padding-bottom: 80px; /* 푸터 높이보다 여유 있게 여백 추가 */
+  box-sizing: border-box;
+}
+
+.product-list-container {
+  display: block;
+}
+
+.product-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 10px 0; /* 상하 여백 추가 */
+  width: calc(100% - 40px); /* 전체 폭에서 마진을 제외 */
+  box-sizing: border-box;
 }
 
 /* 푸터 스타일 */
@@ -28,8 +48,5 @@ footer {
   text-align: center;
   line-height: 60px; /* 푸터 텍스트 중앙 정렬 */
   border-top: 1px solid #ddd; /* 상단 경계선 */
-}
-
-footer p {
-  margin: 0;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* 미세한 그림자 추가 */
 }

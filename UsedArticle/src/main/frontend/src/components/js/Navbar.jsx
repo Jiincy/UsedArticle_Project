@@ -17,6 +17,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
             <>
               <Link to="/chating" className="navbar-link">채팅 목록</Link>
               <Link to="/mypage" className="navbar-link">마이페이지</Link>
+              <Link to="/product" className="navbar-link">전체 상품</Link>
               <span className="navbar-user">안녕하세요, {user ? user.userId : '사용자'}님</span> {/* 사용자 ID 또는 이름 표시 */}
               <button onClick={onLogout} className="navbar-button">로그아웃</button>
             </>

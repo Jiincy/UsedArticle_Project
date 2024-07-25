@@ -9,6 +9,7 @@ import Chating from './components/js/Chating.jsx';
 import Mypage from './components/js/Mypage.jsx';
 import UserSearch from './components/js/UserSearch.jsx';
 import Navbar from './components/js/Navbar';
+import ProductList from './components/js/ProductList.jsx';
 import Footer from './components/js/Footer';
 import './App.css';
 
@@ -40,6 +41,7 @@ function App() {
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/chat" element={<Chat />} />
+            <Route path="/product" element={<ProductList />} />
             <Route path="/chating" element={isLoggedIn ? <Chating isLoggedIn={isLoggedIn} /> : <Navigate to="/login" />} />
             <Route path="/mypage" element={isLoggedIn ? <Mypage user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />
             <Route path="/usersearch" element={<UserSearch />} />

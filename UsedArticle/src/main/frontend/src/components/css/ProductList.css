@@ -1,0 +1,30 @@
+/* ProductList.css */
+
+.product-list {
+  padding: 40px;
+  padding-bottom: 80px; /* 푸터 높이만큼 패딩 추가 */
+  padding-top: 80px; /* 상단 여백 추가 */
+  box-sizing: border-box; /* 패딩이 콘텐츠 영역에 포함되도록 설정 */
+  overflow-y: auto; /* 전체 페이지에서 세로 스크롤 추가 */
+  height: calc(100vh - 80px); /* 전체 화면 높이에서 상단 패딩 및 푸터 높이 제외 */
+}
+
+.product-list-container {
+  display: block; /* 블록 요소로 설정하여 한 줄에 하나씩 배치 */
+  margin: 0 auto; /* 중앙 정렬 */
+  max-width: 100%; /* 컨테이너의 최대 너비를 전체 폭으로 설정 */
+}
+
+.product-item {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin: 0 0 20px 0; /* 하단 여백 추가 */
+  width: calc(100% - 40px); /* 전체 폭에서 좌우 패딩을 제외 */
+  box-sizing: border-box;
+}
+
+/* 제목 스타일 */
+.product-list h1 {
+  margin: 0 0 20px 0; /* 상단과 하단 여백 조정 */
+  font-size: 2rem; /* 적절한 폰트 크기 조정 */
+}
