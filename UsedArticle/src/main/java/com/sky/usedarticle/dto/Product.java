@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Product {
 
-    private String productId;       //상품 아이디
+    private int productId;       //상품 아이디
 
     private String userNo;          //계정 번호
 
@@ -19,13 +19,11 @@ public class Product {
 
     private String productPrice;    //상품 가격
 
-    private String productCategory; //상품카테고리
-
     private String productInfo;     //상품 정보
 
     private String productCondition; //상품 상태
 
-    private String productChange;   //교환 여부
+    private String productChange;   //네고 여부
 
     private LocalDateTime productDate;  //등록일
 
@@ -39,9 +37,8 @@ public class Product {
 
     private String productStatus;   //판매상태
 
-    public Product(String productAddr, String productCategory, String productChange, String productCondition, LocalDateTime productDate, String productDeliveryFree, String productId, String productInfo, int productLike, String productName, String productPrice, String productStatus, LocalDateTime productUpdateDate, String userNo) {
+    public Product(String productAddr, String productChange, String productCondition, LocalDateTime productDate, String productDeliveryFree, int productId, String productInfo, int productLike, String productName, String productPrice, String productStatus, LocalDateTime productUpdateDate, String userNo) {
         this.productAddr = productAddr;
-        this.productCategory = productCategory;
         this.productChange = productChange;
         this.productCondition = productCondition;
         this.productDate = productDate;
@@ -53,6 +50,15 @@ public class Product {
         this.productPrice = productPrice;
         this.productStatus = productStatus;
         this.productUpdateDate = productUpdateDate;
+        this.userNo = userNo;
+    }
+
+
+    public String getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(String userNo) {
         this.userNo = userNo;
     }
 }

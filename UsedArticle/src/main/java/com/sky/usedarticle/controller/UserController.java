@@ -48,15 +48,15 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user")
-    public User updateUser(@RequestBody User user, HttpSession session) {
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-        if (loggedInUser != null) {
-            user.setUserNO(loggedInUser.getUserNO());
-            return userService.updateUser(user);
-        }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 세션이 만료되었습니다.");
-    }
+//    @PutMapping("/user")
+//    public User updateUser(@RequestBody User user, HttpSession session) {
+//        User loggedInUser = (User) session.getAttribute("loggedInUser");
+//        if (loggedInUser != null) {
+//            user.setId(loggedInUser.getId());
+//            return userService.updateUser(user);
+//        }
+//        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 세션이 만료되었습니다.");
+//    }
 
     @DeleteMapping("/user")
     public void deleteUser(HttpSession session) {

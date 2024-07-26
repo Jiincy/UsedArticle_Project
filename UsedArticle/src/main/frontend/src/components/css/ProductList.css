@@ -1,9 +1,9 @@
 /* ProductList.css */
 
 .product-list {
-  padding: 40px;
-  padding-bottom: 80px; /* 푸터 높이만큼 패딩 추가 */
-  padding-top: 80px; /* 상단 여백 추가 */
+  padding: 10px;
+  padding-bottom: 10px; /* 푸터 높이만큼 패딩 추가 */
+  padding-top: 10px; /* 상단 여백 추가 */
   box-sizing: border-box; /* 패딩이 콘텐츠 영역에 포함되도록 설정 */
   overflow-y: auto; /* 전체 페이지에서 세로 스크롤 추가 */
   height: calc(100vh - 80px); /* 전체 화면 높이에서 상단 패딩 및 푸터 높이 제외 */
