@@ -9,32 +9,37 @@ const Login = ({ setIsLoggedIn, setUser }) => {
     const [error, setError] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+    // Login.jsx
+  const handleSubmit = async (event) => {
+      event.preventDefault();
 
-        try {
-            const response = await axios.post('http://localhost:8787/api/login', {
-                userId: userId,
-                userPw: userPw
-            });
+      try {
+          const response = await axios.post('http://localhost:8787/api/login', {
+              userId: userId,
+              userPw: userPw
+          });
 
-            if (response.data) {
-                console.log('로그인 성공:', response.data);
+          if (response.data) {
+              console.log('로그인 성공:', response.data);
 
-                // 로그인 성공 시 상태 업데이트
-                setIsLoggedIn(true);
-                setUser(response.data); // 사용자 정보 설정
+              // 확인: 서버 응답에서 userNo가 올바르게 포함되어 있는지 확인
+              console.log('Response userNo:', response.data.userNo);
 
-                navigate('/');
-            } else {
-                setError('아이디 또는 비밀번호가 올바르지 않습니다.');
-                navigate('/login');
-            }
-        } catch (error) {
-            console.error('로그인 요청 실패:', error);
-            setError('로그인 요청 중 오류가 발생했습니다.');
-        }
-    };
+               sessionStorage.setItem('userNo', response.data.userNO); // 올바른 key 사용
+              setIsLoggedIn(true);
+              setUser(response.data);
+              navigate('/');
+          } else {
+              setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+              navigate('/login');
+          }
+      } catch (error) {
+          console.error('로그인 요청 실패:', error);
+          setError('로그인 요청 중 오류가 발생했습니다.');
+      }
+  };
+
+
 
     return (
         <div className="login-container">

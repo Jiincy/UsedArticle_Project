@@ -11,6 +11,8 @@ import UserSearch from './components/js/UserSearch.jsx';
 import Navbar from './components/js/Navbar';
 import ProductList from './components/js/ProductList.jsx';
 import Footer from './components/js/Footer';
+import ProductInput from './components/js/ProductInput.jsx';
+import ProductDetailList from './components/js/ProductDetailList';
 import './App.css';
 
 function App() {
@@ -45,6 +47,8 @@ function App() {
             <Route path="/chating" element={isLoggedIn ? <Chating isLoggedIn={isLoggedIn} /> : <Navigate to="/login" />} />
             <Route path="/mypage" element={isLoggedIn ? <Mypage user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />
             <Route path="/usersearch" element={<UserSearch />} />
+            <Route path="/productinput" element={<ProductInput />} />
+            <Route path="/productdetail/:productId" element={<ProductDetailList />} />
           </Routes>
         </main>
         <Footer />

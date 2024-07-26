@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class User {
-    private  String id;
+    private int userNO;
     private String userId;
     private String userPw;
     private String userEmail;
