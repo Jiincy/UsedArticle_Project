@@ -1,4 +1,4 @@
-// App.jsx
+// path: src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Mainpage from './components/js/Mainpage';
@@ -40,7 +40,7 @@ function App() {
             <Route path="/" element={<Mainpage isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
             <Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:userId" element={<Chat />} />
             <Route path="/product" element={<ProductList />} />
             <Route path="/chating" element={isLoggedIn ? <Chating isLoggedIn={isLoggedIn} /> : <Navigate to="/login" />} />
             <Route path="/mypage" element={isLoggedIn ? <Mypage user={user} setUser={setUser} setIsLoggedIn={setIsLoggedIn} /> : <Navigate to="/login" />} />

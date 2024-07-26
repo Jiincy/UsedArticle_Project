@@ -52,7 +52,7 @@ public class UserController {
     public User updateUser(@RequestBody User user, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
-            user.setId(loggedInUser.getId());
+            user.setUserNO(loggedInUser.getUserNO());
             return userService.updateUser(user);
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 세션이 만료되었습니다.");

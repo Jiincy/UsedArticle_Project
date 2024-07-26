@@ -1,12 +1,15 @@
+// path: src/components/js/UserSearch.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../css/UserSearch.css'; // CSS 파일 임포트
+import { useNavigate } from 'react-router-dom';
+import '../css/UserSearch.css';
 
 const UserSearch = () => {
     const [keyword, setKeyword] = useState('');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     const handleSearch = async () => {
         setLoading(true);
@@ -22,6 +25,10 @@ const UserSearch = () => {
         }
     };
 
+    const handleUserClick = (userId) => {
+        navigate(`/chat/${userId}`);
+    };
+
     return (
         <div>
             <input
@@ -29,7 +36,7 @@ const UserSearch = () => {
                 value={keyword}
                 onChange={(e) => setKeyword(e.target.value)}
                 placeholder="유저ID를 입력하세요"
-                className="search-input" // CSS 클래스 추가
+                className="search-input"
             />
             <button onClick={handleSearch} className="search-button">검색</button>
             {loading && <p>검색 중...</p>}
@@ -37,7 +44,9 @@ const UserSearch = () => {
             <ul className="search-results">
                 {results.length > 0 ? (
                     results.map((user, index) => (
-                        <li key={index}>{user.userId} ({user.userEmail})</li>
+                        <li key={index} onClick={() => handleUserClick(user.userId)}>
+                            {user.userId} ({user.userEmail})
+                        </li>
                     ))
                 ) : (
                     <li>검색 결과가 없습니다.</li>

@@ -8,4 +8,10 @@
         INSERT INTO message (buyer, seller, product_id, content, type, send_date)
         VALUES (#{buyer}, #{seller}, #{productId}, #{content}, #{type}, NOW())
     </insert>
+    <select id="findMessages" parameterType="map" resultType="com.sky.usedarticle.dto.Message">
+        SELECT * FROM message
+        WHERE buyer = #{buyer}
+        AND seller = #{seller}
+        AND product_id = #{productId}
+    </select>
 </mapper>

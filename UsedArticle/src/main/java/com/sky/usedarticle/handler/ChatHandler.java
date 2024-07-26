@@ -1,15 +1,18 @@
+// path: com/sky/usedarticle/handler/ChatHandler.java
 package com.sky.usedarticle.handler;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sky.usedarticle.dto.Message;
 import com.sky.usedarticle.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,12 +20,17 @@ import java.util.Set;
 @Component
 public class ChatHandler extends TextWebSocketHandler {
 
+    private final ObjectMapper objectMapper;
+    private final MessageService messageService;
     private final Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
 
     @Autowired
-    private MessageService messageService;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    public ChatHandler(MessageService messageService) {
+        this.messageService = messageService;
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.findAndRegisterModules();
+        this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -35,21 +43,36 @@ public class ChatHandler extends TextWebSocketHandler {
         String payload = message.getPayload();
         System.out.println("Received message from session " + session.getId() + ": " + payload);
 
-        // JSON 파싱
-        Message chatMessage = objectMapper.readValue(payload, Message.class);
+        try {
+            if (isNumeric(payload)) {
+                System.err.println("Received numeric message which is not expected: " + payload);
+                return;
+            }
 
-        // 데이터베이스에 메시지 저장
-        messageService.saveMessage(chatMessage);
+            Message chatMessage = objectMapper.readValue(payload, Message.class);
+            messageService.saveMessage(chatMessage);
 
-        // 연결된 모든 세션에 메시지 브로드캐스트
-        for (WebSocketSession webSocketSession : sessions) {
-            if (webSocketSession.isOpen() && !session.getId().equals(webSocketSession.getId())) {
-                try {
-                    webSocketSession.sendMessage(new TextMessage(payload));
-                } catch (Exception e) {
-                    System.err.println("Error sending message to session " + webSocketSession.getId() + ": " + e.getMessage());
+            for (WebSocketSession webSocketSession : sessions) {
+                if (webSocketSession.isOpen() && !session.getId().equals(webSocketSession.getId())) {
+                    try {
+                        webSocketSession.sendMessage(new TextMessage(payload.getBytes(StandardCharsets.UTF_8)));
+                    } catch (Exception e) {
+                        System.err.println("Error sending message to session " + webSocketSession.getId() + ": " + e.getMessage());
+                    }
                 }
             }
+        } catch (Exception e) {
+            System.err.println("Error handling WebSocket message: " + e.getMessage());
+            session.close(CloseStatus.SERVER_ERROR.withReason("Invalid message format"));
+        }
+    }
+
+    private boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 

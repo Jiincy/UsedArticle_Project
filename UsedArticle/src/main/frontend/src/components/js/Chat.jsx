@@ -1,44 +1,55 @@
+// path: src/components/js/Chat.jsx
 import React, { useState, useEffect, useRef } from 'react';
-
 import { useParams } from 'react-router-dom';
-
-
 import '../css/Chat.css';
 
 const Chat = () => {
-    const { userId } = useParams(); // URL에서 userId를 가져옴
+    const { userId } = useParams();
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
-    const [isConnected, setIsConnected] = useState(false);
     const socketRef = useRef(null);
 
     useEffect(() => {
+        console.log(`Attempting WebSocket connection to ws://localhost:8787/chat/${userId}`);
+
         socketRef.current = new WebSocket(`ws://localhost:8787/chat/${userId}`);
 
         socketRef.current.onopen = () => {
-            setIsConnected(true);
+            console.log('WebSocket connection established');
         };
 
         socketRef.current.onmessage = (event) => {
+            console.log('Message received from server:', event.data);
             setMessages(prevMessages => [...prevMessages, event.data]);
         };
 
         socketRef.current.onclose = () => {
-            setIsConnected(false);
+            console.log('WebSocket connection closed');
         };
 
         socketRef.current.onerror = (error) => {
-            console.error('WebSocket error:', error);
+            console.error('WebSocket error:', error.message, error);
         };
 
         return () => {
-            socketRef.current.close();
+            if (socketRef.current) {
+                socketRef.current.close();
+            }
         };
     }, [userId]);
 
     const sendMessage = () => {
-        if (socketRef.current && isConnected && input) {
-            socketRef.current.send(input);
+        if (socketRef.current && input) {
+            const message = {
+                buyer: "John", // 예시 값
+                seller: "Doe", // 예시 값
+                productId: "123", // 예시 값
+                content: input,
+                type: "Buyer", // 예시 값
+                sendDate: new Date().toISOString() // 현재 날짜 및 시간
+            };
+
+            socketRef.current.send(JSON.stringify(message));
             setMessages(prevMessages => [...prevMessages, `Me: ${input}`]);
             setInput('');
         } else {
