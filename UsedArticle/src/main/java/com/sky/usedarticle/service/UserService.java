@@ -45,5 +45,10 @@ public class UserService {
     public List<User> searchUsers(String keyword) {
         return userMapper.searchUsers(keyword);
     }
+
+    public Integer findUserNoByUserId(String userId) {
+        return userMapper.findUserNoByUserId(userId);
+    }
+
 }
 

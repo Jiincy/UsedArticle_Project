@@ -20,5 +20,13 @@ public interface UserMapper {
     void deleteUser(@Param("userId") String userId);
 
     List<User> searchUsers(@Param("keyword") String keyword);
+
+    User findUserById(int userNo);
+
+    User findUserByUserId(String userId);
+
+    Integer findUserNoByUserId(String userId);
+
+    User getUserByNo(int userNo);
 }
 

@@ -14,8 +14,9 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @GetMapping
-    public List<Message> getMessages(@RequestParam String buyer, @RequestParam String seller, @RequestParam String productId) {
-        return messageService.getMessages(buyer, seller, productId);
+    @PostMapping("/messages")
+    public void saveMessage(@RequestBody Message message) {
+        messageService.saveMessage(message);
     }
+
 }

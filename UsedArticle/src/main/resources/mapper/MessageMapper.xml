@@ -5,13 +5,13 @@
 
 <mapper namespace="com.sky.usedarticle.mapper.MessageMapper">
     <insert id="insertMessage" parameterType="com.sky.usedarticle.dto.Message">
-        INSERT INTO message (buyer, seller, product_id, content, type, send_date)
-        VALUES (#{buyer}, #{seller}, #{productId}, #{content}, #{type}, NOW())
+        INSERT INTO messages (chat_room_id, sender_no, content, send_date)
+        VALUES (#{chatRoomId}, #{senderNo}, #{content}, #{sendDate});
     </insert>
-    <select id="findMessages" parameterType="map" resultType="com.sky.usedarticle.dto.Message">
-        SELECT * FROM message
-        WHERE buyer = #{buyer}
-        AND seller = #{seller}
-        AND product_id = #{productId}
+
+    <select id="getMessagesByChatRoomId" parameterType="string" resultType="com.sky.usedarticle.dto.Message">
+        SELECT * FROM messages WHERE chat_room_id = #{chatRoomId}
     </select>
+
+
 </mapper>

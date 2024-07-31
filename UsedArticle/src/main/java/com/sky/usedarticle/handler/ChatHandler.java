@@ -1,4 +1,3 @@
-// path: com/sky/usedarticle/handler/ChatHandler.java
 package com.sky.usedarticle.handler;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -44,14 +43,18 @@ public class ChatHandler extends TextWebSocketHandler {
         System.out.println("Received message from session " + session.getId() + ": " + payload);
 
         try {
-            if (isNumeric(payload)) {
-                System.err.println("Received numeric message which is not expected: " + payload);
-                return;
+            // JSON 포맷 확인 및 변환
+            Message chatMessage = objectMapper.readValue(payload, Message.class);
+
+            // 필드 유효성 검사
+            if (chatMessage.getChatRoomId() == null || chatMessage.getSenderNo() <= 0) {
+                throw new IllegalArgumentException("유효하지 않은 chatRoomId 또는 senderNo: " + chatMessage.getChatRoomId() + ", " + chatMessage.getSenderNo());
             }
 
-            Message chatMessage = objectMapper.readValue(payload, Message.class);
+            // 메시지 저장
             messageService.saveMessage(chatMessage);
 
+            // 모든 세션에 메시지 전송
             for (WebSocketSession webSocketSession : sessions) {
                 if (webSocketSession.isOpen() && !session.getId().equals(webSocketSession.getId())) {
                     try {
@@ -61,18 +64,12 @@ public class ChatHandler extends TextWebSocketHandler {
                     }
                 }
             }
+        } catch (IllegalArgumentException e) {
+            System.err.println("Invalid message data: " + e.getMessage());
+            session.close(CloseStatus.BAD_DATA.withReason("Invalid message data"));
         } catch (Exception e) {
             System.err.println("Error handling WebSocket message: " + e.getMessage());
             session.close(CloseStatus.SERVER_ERROR.withReason("Invalid message format"));
-        }
-    }
-
-    private boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
         }
     }
 
