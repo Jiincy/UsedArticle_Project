@@ -27,19 +27,17 @@ const Login = ({ setIsLoggedIn, setUser }) => {
 
                 navigate('/');
             } else {
-                setError('아이디 또는 비밀번호가 올바르지 않습니다.');
+                window.alert('아이디 또는 비밀번호가 올바르지 않습니다.'); // 얼랏창으로 오류 메시지 표시
                 navigate('/login');
             }
         } catch (error) {
             console.error('로그인 요청 실패:', error);
-            setError('로그인 요청 중 오류가 발생했습니다.');
+            window.alert('로그인 요청 중 오류가 발생했습니다.'); // 얼랏창으로 오류 메시지 표시
         }
     };
 
     return (
         <div className="login-container">
-
-            {error && <div>{error}</div>}
             <form onSubmit={handleSubmit}>
                 <div>
                     <div><h2>로그인</h2></div>
@@ -63,10 +61,9 @@ const Login = ({ setIsLoggedIn, setUser }) => {
                     />
                 </div>
                 <button type="submit">로그인</button>
-                            <Link to="/signup" className="signup-link">회원가입</Link>
-                            <Link to="/" className="home-link">홈으로 가기</Link>
+                <Link to="/signup" className="signup-link">회원가입</Link>
+                <Link to="/" className="home-link">홈으로 가기</Link>
             </form>
-
         </div>
     );
 };

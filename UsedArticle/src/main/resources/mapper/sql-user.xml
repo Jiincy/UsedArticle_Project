@@ -40,4 +40,25 @@
         WHERE user_id = #{keyword}
     </select>
 
+    <select id="findUserByUserId" parameterType="String" resultType="com.sky.usedarticle.dto.User">
+        SELECT *
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+
+    <!-- user_no로 유저 찾기 -->
+    <select id="findUserById" parameterType="int" resultType="com.sky.usedarticle.dto.User">
+        SELECT *
+        FROM user
+        WHERE user_no = #{userNo}
+    </select>
+
+    <select id="findUserNoByUserId" parameterType="String" resultType="Integer">
+        SELECT user_no
+        FROM user
+        WHERE user_id = #{userId}
+    </select>
+    <select id="getUserByNo" parameterType="int" resultType="com.sky.usedarticle.dto.User">
+        SELECT * FROM user WHERE user_no = #{userNo}
+    </select>
 </mapper>

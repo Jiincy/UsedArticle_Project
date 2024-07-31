@@ -1,4 +1,3 @@
-// path: com/sky/usedarticle/service/MessageService.java
 package com.sky.usedarticle.service;
 
 import com.sky.usedarticle.dto.Message;
@@ -10,18 +9,28 @@ import java.util.List;
 
 @Service
 public class MessageService {
-    private final MessageMapper messageMapper;
 
     @Autowired
-    public MessageService(MessageMapper messageMapper) {
-        this.messageMapper = messageMapper;
+    private MessageMapper messageMapper;
+
+    public List<Message> getMessagesByChatRoomId(String chatRoomId) {
+        return messageMapper.getMessagesByChatRoomId(chatRoomId);
     }
 
     public void saveMessage(Message message) {
-        messageMapper.insertMessage(message);
-    }
+        String chatRoomId = message.getChatRoomId();
+        int senderNo;
 
-    public List<Message> getMessages(String buyer, String seller, String productId) {
-        return messageMapper.findMessages(buyer, seller, productId);
+        try {
+            senderNo = Integer.parseInt(String.valueOf(message.getSenderNo()));
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid senderNo: " + e.getMessage());
+        }
+
+        if (chatRoomId == null || chatRoomId.isEmpty() || senderNo <= 0) {
+            throw new IllegalArgumentException("Invalid chatRoomId or senderNo");
+        }
+
+        messageMapper.insertMessage(message);
     }
 }

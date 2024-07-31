@@ -1,9 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/Navbar.css';
 import homeIcon from '../../assets/home-icon.png'; // 올바른 경로로 수정
 
 const Navbar = ({ isLoggedIn, onLogout, user }) => {
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 리디렉션
+
+  const handleLogout = () => {
+    onLogout();
+    navigate('/'); // 홈 페이지로 이동
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -19,7 +26,7 @@ const Navbar = ({ isLoggedIn, onLogout, user }) => {
               <Link to="/mypage" className="navbar-link">마이페이지</Link>
               <Link to="/product" className="navbar-link">전체 상품</Link>
               <span className="navbar-user">안녕하세요, {user ? user.userId : '사용자'}님</span> {/* 사용자 ID 또는 이름 표시 */}
-              <button onClick={onLogout} className="navbar-button">로그아웃</button>
+              <button onClick={handleLogout} className="navbar-button">로그아웃</button>
             </>
           ) : (
             <>

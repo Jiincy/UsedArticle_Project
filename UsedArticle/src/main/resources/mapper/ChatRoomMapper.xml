@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.usedarticle.mapper.ChatRoomMapper">
+
+    <!-- 채팅방 생성 쿼리 -->
+    <insert id="createChatRoom" parameterType="com.sky.usedarticle.dto.ChatRoom">
+        INSERT INTO chat_rooms (user1_no, user2_no)
+        VALUES (#{user1No}, #{user2No});
+    </insert>
+
+    <!-- 사용자 ID로 채팅방 찾기 쿼리 -->
+    <select id="findChatRoomsByUserNo" parameterType="int" resultType="com.sky.usedarticle.dto.ChatRoom">
+        SELECT * FROM chat_rooms WHERE user1_no = #{userNo} OR user2_no = #{userNo}
+    </select>
+
+    <!-- 채팅방 목록을 가져오는 쿼리 -->
+    <select id="getUserChatRooms" parameterType="int" resultType="com.sky.usedarticle.dto.ChatRoom">
+        SELECT * FROM chat_rooms WHERE user1_no = #{userNo} OR user2_no = #{userNo}
+    </select>
+
+    <!-- 채팅방 삽입 쿼리 -->
+    <insert id="insertChatRoom">
+        INSERT INTO chat_rooms (user1_no, user2_no)
+        VALUES (#{user1No}, #{user2No})
+    </insert>
+</mapper>

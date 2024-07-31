@@ -1,6 +1,10 @@
 package com.sky.usedarticle.controller;
 
+import com.sky.usedarticle.dto.ChatRoom;
+import com.sky.usedarticle.dto.Message;
 import com.sky.usedarticle.dto.User;
+import com.sky.usedarticle.service.ChatRoomService;
+import com.sky.usedarticle.service.MessageService;
 import com.sky.usedarticle.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +19,12 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ChatRoomService chatRoomService;
+
+    @Autowired
+    private MessageService messageService;
 
     @PostMapping("/signup")
     public void signUp(@RequestBody User user) {
@@ -36,7 +46,6 @@ public class UserController {
     public void logout(HttpSession session) {
         session.invalidate();
     }
-
 
     @GetMapping("/user")
     public User getUser(HttpSession session) {
@@ -63,26 +72,54 @@ public class UserController {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
         if (loggedInUser != null) {
             try {
-                System.out.println("User found in session: " + loggedInUser.getUserId()); // 디버깅 메시지 추가
+                System.out.println("User found in session: " + loggedInUser.getUserId());
                 userService.deleteUser(loggedInUser.getUserId());
                 session.invalidate();
-                System.out.println("Session invalidated and user deleted."); // 디버깅 메시지 추가
+                System.out.println("Session invalidated and user deleted.");
             } catch (Exception e) {
-                // 디버깅 메시지 추가
                 System.err.println("계정 삭제 중 오류 발생: " + e.getMessage());
-                e.printStackTrace();  // 스택 추적 출력
+                e.printStackTrace();
                 throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "사용자 삭제 중 오류 발생", e);
             }
         } else {
-            System.err.println("No user found in session."); // 디버깅 메시지 추가
+            System.err.println("No user found in session.");
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 세션이 만료되었습니다.");
         }
     }
-    // 유저 검색 엔드포인트 추가
+
     @GetMapping("/users/search")
     public List<User> searchUsers(@RequestParam String keyword) {
         return userService.searchUsers(keyword);
     }
 
+    @GetMapping("/chatRooms")
+    public List<ChatRoom> getUserChatRooms(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            return chatRoomService.getUserChatRooms(loggedInUser.getUserNO());
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 세션이 만료되었습니다.");
+        }
+    }
+
+    @GetMapping("/chatRooms/{chatRoomId}/messages")
+    public List<Message> getMessagesByChatRoomId(@PathVariable String chatRoomId) {
+        return messageService.getMessagesByChatRoomId(chatRoomId);
+    }
+
+    @PostMapping("/messages")
+    public void saveMessage(@RequestBody Message message) {
+        messageService.saveMessage(message);
+    }
+
+    @GetMapping("/currentUser")
+    public User getCurrentUser(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            return loggedInUser;
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "로그인 세션이 만료되었습니다.");
+        }
+    }
 
 }

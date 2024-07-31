@@ -1,59 +1,101 @@
-// path: src/components/js/Chat.jsx
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import '../css/Chat.css';
 
 const Chat = () => {
-    const { userId } = useParams();
+    const { userId: sellerId } = useParams();
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
+    const [loggedInUser, setLoggedInUser] = useState(null);
     const socketRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        console.log(`Attempting WebSocket connection to ws://localhost:8787/chat/${userId}`);
+        if (!sellerId) {
+            console.error('유효하지 않은 sellerId:', sellerId);
+            return;
+        }
 
-        socketRef.current = new WebSocket(`ws://localhost:8787/chat/${userId}`);
+        axios.get('/api/user')
+            .then(response => {
+                if (!response.data) {
+                    // 로그인 상태가 아니면 메인 화면으로 리디렉션
+                    navigate('/');
+                } else {
+                    setLoggedInUser(response.data);
+                }
+            })
+            .catch(error => {
+                console.error('로그인 사용자 정보 가져오기 오류:', error);
+                navigate('/');
+            });
 
-        socketRef.current.onopen = () => {
-            console.log('WebSocket connection established');
+        axios.get(`/api/chatRooms/${sellerId}/messages`)
+            .then(response => setMessages(response.data))
+            .catch(error => console.error('메시지 가져오기 오류:', error));
+
+        const connectWebSocket = () => {
+            console.log(`WebSocket 연결 시도: ws://localhost:8787/chat/${sellerId}`);
+            socketRef.current = new WebSocket(`ws://localhost:8787/chat/${sellerId}`);
+
+            socketRef.current.onopen = () => {
+                console.log('WebSocket 연결 성공');
+            };
+
+            socketRef.current.onmessage = (event) => {
+                console.log('서버로부터 메시지 수신:', event.data);
+                try {
+                    const receivedMessage = JSON.parse(event.data);
+                    setMessages(prevMessages => [...prevMessages, receivedMessage]);
+                } catch (error) {
+                    console.error('WebSocket 메시지 파싱 오류:', error);
+                }
+            };
+
+            socketRef.current.onclose = () => {
+                console.log('WebSocket 연결 종료');
+                setTimeout(connectWebSocket, 5000);
+            };
+
+            socketRef.current.onerror = (error) => {
+                console.error('WebSocket 오류:', error.message, error);
+            };
         };
 
-        socketRef.current.onmessage = (event) => {
-            console.log('Message received from server:', event.data);
-            setMessages(prevMessages => [...prevMessages, event.data]);
-        };
-
-        socketRef.current.onclose = () => {
-            console.log('WebSocket connection closed');
-        };
-
-        socketRef.current.onerror = (error) => {
-            console.error('WebSocket error:', error.message, error);
-        };
+        connectWebSocket();
 
         return () => {
             if (socketRef.current) {
                 socketRef.current.close();
             }
         };
-    }, [userId]);
+    }, [sellerId, navigate]);
 
     const sendMessage = () => {
-        if (socketRef.current && input) {
+        if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN && input.trim() && loggedInUser) {
+            if (!sellerId) {
+                console.error('유효하지 않은 sellerId:', sellerId);
+                return;
+            }
+
             const message = {
-                buyer: "John", // 예시 값
-                seller: "Doe", // 예시 값
-                productId: "123", // 예시 값
-                content: input,
-                type: "Buyer", // 예시 값
-                sendDate: new Date().toISOString() // 현재 날짜 및 시간
+                chatRoomId: sellerId,
+                senderNo: loggedInUser.userNO,
+                content: input.trim(),
+                sendDate: new Date().toISOString()
             };
 
-            socketRef.current.send(JSON.stringify(message));
-            setMessages(prevMessages => [...prevMessages, `Me: ${input}`]);
-            setInput('');
+            console.log('전송할 메시지:', message);
+            try {
+                socketRef.current.send(JSON.stringify(message));
+                setMessages(prevMessages => [...prevMessages, message]);
+                setInput('');
+            } catch (error) {
+                console.error('메시지 전송 오류:', error.message, error);
+            }
         } else {
-            console.error('WebSocket is not connected or input is empty');
+            console.error('WebSocket이 연결되지 않았거나 입력이 비어있거나 사용자가 로그인되지 않았습니다.');
         }
     };
 
@@ -61,8 +103,11 @@ const Chat = () => {
         <div className="chat-container">
             <div className="chat-messages">
                 {messages.map((message, index) => (
-                    <div key={index} className="chat-message">
-                        {message}
+                    <div
+                        key={index}
+                        className={`chat-message ${message.senderNo === loggedInUser?.userNO ? 'my-message' : 'other-message'}`}
+                    >
+                        {message.content}
                     </div>
                 ))}
             </div>
@@ -71,8 +116,9 @@ const Chat = () => {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
+                    placeholder="메시지를 입력하세요"
                 />
-                <button onClick={sendMessage}>Send</button>
+                <button onClick={sendMessage}>전송</button>
             </div>
         </div>
     );

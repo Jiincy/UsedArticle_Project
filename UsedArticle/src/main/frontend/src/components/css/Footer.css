@@ -1,13 +1,29 @@
+/* 전체 페이지 설정 */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 뷰포트의 전체 높이 */
+}
+
+/* 메인 컨텐츠 */
+main {
+  flex: 1; /* 남은 공간을 차지 */
+}
+
 /* 푸터 전체 스타일 */
 footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   background-color: #f1f1f1;
   padding: 10px 0; /* 푸터 안쪽 여백 */
   border-top: 1px solid #ddd;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1); /* 미세한 그림자 추가 */
+  width: 100%; /* 전체 너비 사용 */
+  position: relative; /* 부모 컨테이너에 따라 위치 조정 */
 }
 
 .footer-container {
@@ -62,7 +78,6 @@ footer {
   text-decoration: underline; /* 호버 시 밑줄 */
 }
 
-/* 추가된 스타일 */
 .footer-extra {
   margin-top: 20px; /* 상단 여백 */
 }
