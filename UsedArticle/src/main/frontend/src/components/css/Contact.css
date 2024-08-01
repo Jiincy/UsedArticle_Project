@@ -1,0 +1,61 @@
+.contact {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.contact h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+textarea {
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  resize: vertical;
+}
+
+button {
+  align-self: flex-end;
+  padding: 10px 20px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.questions-list {
+  margin-top: 20px;
+}
+
+.question-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.answers {
+  margin-top: 10px;
+}
+
+.answer-item {
+  padding-left: 20px;
+  margin-bottom: 5px;
+}
+
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}

@@ -1,18 +1,17 @@
 package com.sky.usedarticle.controller;
 
-import com.google.gson.Gson;
 import com.sky.usedarticle.dto.Product;
-import com.sky.usedarticle.service.FileService;
 import com.sky.usedarticle.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -22,24 +21,71 @@ public class ProductController {
     private ProductService productService;
 
     @Autowired
-    private FileService fileService;
-
-    private static final String UPLOAD_DIR = "uploads/";
+    private HttpSession session;
 
     // 모든 상품 조회
     @GetMapping("/product")
     public List<Product> getAllProducts() {
         return productService.getAllProducts();
     }
-
-    @PostMapping("/productInput")
-    public void input(@RequestBody Product product){
-        productService.registerProduct(product);
-
-  }
-        @GetMapping("/productdetail/{productId}")
-        public Product getProductById(@PathVariable int productId) {
+    // 상품 상세 정보 조회
+    @GetMapping("/productdetail/{productId}")
+    public Product getProductById(@PathVariable int productId) {
         return productService.getProductById(productId);
     }
+
+    // 상품 등록
+    @PostMapping("/productInput")
+    public ResponseEntity<String> input(
+            @RequestParam("userNo") String userNo,
+            @RequestParam("productName") String productName,
+            @RequestParam("productPrice") String productPrice,
+            @RequestParam("productInfo") String productInfo,
+            @RequestParam("productCondition") String productCondition,
+            @RequestParam("productChange") String productChange,
+            @RequestParam("productDeliveryFree") String productDeliveryFree,
+            @RequestParam("productAddr") String productAddr,
+            @RequestParam("productStatus") String productStatus,
+            HttpSession session) {
+
+        String currentUserNo = (String) session.getAttribute("userNo");
+
+        if (!userNo.equals(currentUserNo)) {
+            return ResponseEntity.status(403).body("Unauthorized to register this product");
+        }
+
+        try {
+            Product product = new Product();
+            product.setUserNo(userNo);
+            product.setProductName(productName);
+            product.setProductPrice(productPrice);
+            product.setProductInfo(productInfo);
+            product.setProductCondition(productCondition);
+            product.setProductChange(productChange);
+            product.setProductDeliveryFree(productDeliveryFree);
+            product.setProductAddr(productAddr);
+            product.setProductStatus(productStatus);
+            productService.registerProduct(product);
+
+            return ResponseEntity.ok("Product registered successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to register product: " + e.getMessage());
+        }
+    }
+
+
+
+    @DeleteMapping("/productdelete/{productId}")
+    public ResponseEntity<?> deleteProduct(@PathVariable int productId, HttpSession session) {
+        // 권한 검증
+        if (!productService.isAuthorized(session, productId)) {
+            return ResponseEntity.status(403).body("권한이 없습니다. 작성자만 삭제할 수 있습니다.");
+        }
+        productService.deleteProduct(productId);
+        return ResponseEntity.noContent().build(); // 성공적으로 삭제됨
+    }
+
+
 
 }

@@ -15,7 +15,9 @@ public class FileDto {
 
     private String fileName;
 
-    private String productId;
+    private int productId;
 
 
+    public FileDto(String fileId, String fileName, String filePath) {
+    }
 }

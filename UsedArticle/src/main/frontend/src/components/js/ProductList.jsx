@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // useNavigate를 import
+import { useNavigate } from 'react-router-dom';
 import '../css/ProductList.css';
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const navigate = useNavigate(); // useNavigate 훅을 사용
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios.get('http://localhost:8787/api/product')
@@ -33,17 +33,21 @@ const ProductList = () => {
   };
 
   const handleProductRegistration = () => {
-    const userNo = sessionStorage.getItem('userNo'); // 세션에서 사용자 번호 가져오기
-    console.log('ProductList userNo:', userNo); // 로그로 확인
+    const userNo = sessionStorage.getItem('userNo');
+    console.log('ProductList userNo:', userNo);
     if (userNo) {
-        navigate(`/ProductInput?userNo=${userNo}`); // URL에 사용자 번호 추가
+        navigate(`/ProductInput?userNo=${userNo}`);
     } else {
         console.error('User number not found in sessionStorage.');
     }
   };
 
   const handleProductClick = (productId) => {
-    navigate(`/productdetail/${productId}`); // 상세 페이지로 이동
+    navigate(`/productdetail/${productId}`);
+  };
+
+  const handleContactClick = () => {
+    navigate('/contact');
   };
 
   return (
@@ -71,19 +75,27 @@ const ProductList = () => {
             <div
               key={product.productId}
               className="product-item"
-              onClick={() => handleProductClick(product.productId)} // 클릭 시 상세 페이지로 이동
+              onClick={() => handleProductClick(product.productId)}
             >
               <h2>{product.productName}</h2>
               <p>{product.productInfo}</p>
               <p>가격: {product.productPrice}</p>
               <p>카테고리: {product.productCategory}</p>
               <p>상태: {product.productCondition}</p>
-              <button className="inquiry-button">상품 문의</button>
             </div>
           ))
         ) : (
           <p>상품이 없습니다.</p>
         )}
+      </div>
+
+      <div className="contact-button-container">
+        <button
+          className="contact-button"
+          onClick={handleContactClick}
+        >
+          고객센터 문의
+        </button>
       </div>
     </div>
   );

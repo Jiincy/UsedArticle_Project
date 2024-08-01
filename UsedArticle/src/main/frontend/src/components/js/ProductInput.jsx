@@ -6,50 +6,43 @@ import '../css/ProductInput.css';
 // 천 단위 구분 기호 추가 함수
 const formatNumber = (value) => {
     if (!value) return '';
-    return Number(value.replace(/[^0-9]/g, '')).toLocaleString() + '원'; // 숫자만 허용 및 천 단위 구분 기호 추가
+    return Number(value.replace(/[^0-9]/g, '')).toLocaleString() + '원';
 };
 
 // 숫자만 허용하는 함수
 const parseNumber = (value) => {
-    return value.replace(/[^0-9]/g, ''); // 숫자만 허용
+    return value.replace(/[^0-9]/g, '');
 };
 
 const ProductInput = () => {
+    const location = useLocation();
+    const navigate = useNavigate(); // useNavigate 훅 사용
     const [product, setProduct] = useState({
-        productId: '',
-        userNo: '',
         productName: '',
         productPrice: '',
         productInfo: '',
         productCondition: '',
         productChange: '',
-        productDate: '',
-        productUpdateDate: '',
-        productDeliveryFree: '아니요', // 기본값 설정
+        productDeliveryFree: '아니요',
         productAddr: '',
-        productStatus: '판매중' // 기본값 설정
+        productStatus: '판매중',
+        userNo: ''
     });
 
-    const location = useLocation();
-    const navigate = useNavigate(); // useNavigate 훅을 사용하여 페이지 이동
-    const queryParams = new URLSearchParams(location.search);
-    const userNo = queryParams.get('userNo');
-
     useEffect(() => {
-        console.log('URL userNo:', userNo);
+        const params = new URLSearchParams(location.search);
+        const userNo = params.get('userNo');
         if (userNo) {
             setProduct(prevProduct => ({
                 ...prevProduct,
-                userNo: userNo
+                userNo
             }));
         }
-    }, [userNo]);
+    }, [location]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
         if (name === 'productPrice') {
-            // 가격 입력값 포맷 처리
             const formattedValue = formatNumber(parseNumber(value));
             setProduct(prevProduct => ({
                 ...prevProduct,
@@ -65,18 +58,26 @@ const ProductInput = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const productWithDefaultLike = { ...product, productLike: 0 };
+        const formData = new FormData();
+        formData.append('userNo', product.userNo);
+        formData.append('productName', product.productName);
+        formData.append('productPrice', product.productPrice);
+        formData.append('productInfo', product.productInfo);
+        formData.append('productCondition', product.productCondition);
+        formData.append('productChange', product.productChange);
+        formData.append('productDeliveryFree', product.productDeliveryFree);
+        formData.append('productAddr', product.productAddr);
+        formData.append('productStatus', product.productStatus);
 
         try {
-            const response = await axios.post('http://localhost:8787/api/productInput', productWithDefaultLike, {
+            const response = await axios.post('http://localhost:8787/api/productInput', formData, {
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'multipart/form-data'
                 }
             });
-
-            console.log('서버 응답:', response.data); // 응답 데이터 로그
+            console.log('서버 응답:', response.data);
             alert('상품이 성공적으로 등록되었습니다!');
-            navigate('/product'); // 등록 완료 후 /product 페이지로 이동
+            navigate('/product'); // 성공 후 리디렉션
         } catch (error) {
             console.error('Error registering product:', error);
         }
@@ -86,7 +87,7 @@ const ProductInput = () => {
         <div className="product-input">
             <h1>상품 등록</h1>
             <form onSubmit={handleSubmit} className="product-input-form">
-                <label>
+                <label className="hidden-field">
                     사용자 번호:
                     <input
                         type="text"
@@ -118,7 +119,6 @@ const ProductInput = () => {
                         placeholder="예: 10,000"
                     />
                 </label>
-
                 <label>
                     상품 정보:
                     <textarea
@@ -190,6 +190,7 @@ const ProductInput = () => {
                         <option value="예약중">예약중</option>
                     </select>
                 </label>
+                {/* 상품 이미지 입력 부분 제거 */}
                 <button type="submit" className="submit-button">등록하기</button>
             </form>
         </div>
