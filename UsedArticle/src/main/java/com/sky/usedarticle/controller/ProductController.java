@@ -1,6 +1,7 @@
 package com.sky.usedarticle.controller;
 
 import com.sky.usedarticle.dto.Product;
+import com.sky.usedarticle.dto.User;
 import com.sky.usedarticle.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,10 +49,11 @@ public class ProductController {
             @RequestParam("productStatus") String productStatus,
             HttpSession session) {
 
-        String currentUserNo = (String) session.getAttribute("userNo");
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        String currentUserNo = String.valueOf(loggedInUser != null ? loggedInUser.getUserNO() : null);
 
-        if (!userNo.equals(currentUserNo)) {
-            return ResponseEntity.status(403).body("Unauthorized to register this product");
+        if (currentUserNo == null || !userNo.equals(currentUserNo)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to register this product");
         }
 
         try {
@@ -70,21 +72,32 @@ public class ProductController {
             return ResponseEntity.ok("Product registered successfully");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Failed to register product: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to register product: " + e.getMessage());
         }
     }
 
+
+    @GetMapping("/currentUserNo")
+    public ResponseEntity<User> getCurrentUser(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser != null) {
+            return ResponseEntity.ok(loggedInUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+    }
 
 
     @DeleteMapping("/productdelete/{productId}")
     public ResponseEntity<?> deleteProduct(@PathVariable int productId, HttpSession session) {
         // 권한 검증
         if (!productService.isAuthorized(session, productId)) {
-            return ResponseEntity.status(403).body("권한이 없습니다. 작성자만 삭제할 수 있습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다. 작성자만 삭제할 수 있습니다.");
         }
         productService.deleteProduct(productId);
         return ResponseEntity.noContent().build(); // 성공적으로 삭제됨
     }
+
 
 
 

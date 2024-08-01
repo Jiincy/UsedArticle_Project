@@ -13,44 +13,47 @@ const ProductDetailList = () => {
 
     useEffect(() => {
         // 상품 상세 정보와 현재 사용자 번호를 가져오는 함수
-        const fetchData = async () => {
-            try {
-                // 상품 상세 정보 가져오기
-                const productResponse = await axios.get(`http://localhost:8787/api/productdetail/${productId}`);
-                setProduct(productResponse.data);
+       const fetchData = async () => {
+           try {
+               // 상품 상세 정보 가져오기
+               const productResponse = await axios.get(`http://localhost:8787/api/productdetail/${productId}`);
+               setProduct(productResponse.data);
 
-                // 현재 사용자 번호 가져오기
-                const userResponse = await axios.get('/api/currentUserNo');
-                setCurrentUserNo(userResponse.data.userNo);
+               // 현재 사용자 번호 가져오기
+               const userResponse = await axios.get('http://localhost:8787/api/currentUserNo');
+               console.log('User response:', userResponse.data); // 응답 데이터 확인
+               setCurrentUserNo(userResponse.data.userNo);
 
-                // 작성자와 현재 사용자가 같은지 확인
-                setIsOwner(userResponse.data.userNo === productResponse.data.userNo);
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            } finally {
-                setLoading(false); // 데이터 로딩 완료
-            }
-        };
+               // 작성자와 현재 사용자가 같은지 확인
+               setIsOwner(userResponse.data.userNo === productResponse.data.userNo);
+           } catch (error) {
+               console.error('Error fetching data:', error);
+           } finally {
+               setLoading(false); // 데이터 로딩 완료
+           }
+       };
+
+
 
         fetchData();
     }, [productId]);
 
-    const handleDelete = () => {
-        if (!isOwner) {
-            alert('권한이 없습니다. 작성자만 삭제할 수 있습니다.');
-            return;
-        }
+   const handleDelete = async () => {
+       if (!isOwner) {
+           alert('권한이 없습니다. 작성자만 삭제할 수 있습니다.');
+           return;
+       }
 
-        axios.delete(`http://localhost:8787/api/productdelete/${productId}`)
-            .then(response => {
-                alert('상품이 성공적으로 삭제되었습니다!');
-                navigate('/productList'); // 삭제 후 상품 목록 페이지로 이동
-            })
-            .catch(error => {
-                console.error('Error deleting product:', error);
-                alert('상품 삭제에 실패했습니다.');
-            });
-    };
+       try {
+          await axios.delete(`http://localhost:8787/api/productdelete/${productId}`);
+           alert('상품이 성공적으로 삭제되었습니다!');
+           navigate('/productList');
+       } catch (error) {
+           console.error('Error deleting product:', error);
+           alert('상품 삭제에 실패했습니다.');
+       }
+   };
+
 
     const handleEdit = () => {
         if (!isOwner) {

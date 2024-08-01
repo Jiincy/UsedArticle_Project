@@ -58,12 +58,12 @@
 
     <select id="getProductOwnerNo" resultType="int">
         SELECT user_no
-        FROM products
+        FROM Product
         WHERE product_id = #{productId}
     </select>
 
     <delete id="deleteProduct">
-        DELETE FROM products
+        DELETE FROM Product
         WHERE product_id = #{productId}
     </delete>
 

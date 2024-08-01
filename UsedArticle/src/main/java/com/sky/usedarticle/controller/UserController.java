@@ -37,10 +37,12 @@ public class UserController {
         String userPw = user.getUserPw();
         User loggedInUser = userService.login(userId, userPw);
         if (loggedInUser != null) {
+            // 로그인된 사용자 정보를 세션에 저장
             session.setAttribute("loggedInUser", loggedInUser);
         }
         return loggedInUser;
     }
+
 
     @PostMapping("/logout")
     public void logout(HttpSession session) {
