@@ -55,4 +55,16 @@
         WHERE
         product_id = #{productId}
     </select>
+
+    <select id="getProductOwnerNo" resultType="int">
+        SELECT user_no
+        FROM products
+        WHERE product_id = #{productId}
+    </select>
+
+    <delete id="deleteProduct">
+        DELETE FROM products
+        WHERE product_id = #{productId}
+    </delete>
+
 </mapper>

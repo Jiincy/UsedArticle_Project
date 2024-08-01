@@ -13,6 +13,7 @@ import ProductList from './components/js/ProductList.jsx';
 import Footer from './components/js/Footer';
 import ProductInput from './components/js/ProductInput.jsx';
 import ProductDetailList from './components/js/ProductDetailList';
+import Contact from './components/js/Contact';
 import './App.css';
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
             <Route path="/usersearch" element={<UserSearch />} />
             <Route path="/productinput" element={<ProductInput />} />
             <Route path="/productdetail/:productId" element={<ProductDetailList />} />
+            <Route path="/contact" element={<Contact />} />
           </Routes>
         </main>
         <Footer />
