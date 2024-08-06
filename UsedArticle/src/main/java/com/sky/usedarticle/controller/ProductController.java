@@ -1,7 +1,9 @@
 package com.sky.usedarticle.controller;
 
 import com.sky.usedarticle.dto.Product;
+import com.sky.usedarticle.dto.ProductLike;
 import com.sky.usedarticle.dto.User;
+import com.sky.usedarticle.service.ProductLikeService;
 import com.sky.usedarticle.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,9 @@ public class ProductController {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private ProductLikeService productLikeService;
 
     // 모든 상품 조회
     @GetMapping("/product")
@@ -129,11 +134,78 @@ public class ProductController {
         }
     }
 
+    // 내가 등록한 상품 조회
+    @GetMapping("/myProducts")
+    public ResponseEntity<List<Product>> getMyProducts(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        List<Product> products = productService.getProductsByUserNo(loggedInUser.getUserNO());
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/product/likes")
+    public ResponseEntity<List<Product>> getLikedProducts(HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        int userNo = loggedInUser.getUserNO();
+        try {
+            List<Product> likedProducts = productLikeService.getLikedProducts(userNo);
+            return ResponseEntity.ok(likedProducts);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null); // 오류 발생 시 400 반환
+        }
+    }
+
+    @PostMapping("/product/like/{productId}")
+    public ResponseEntity<String> addProductLike(@PathVariable int productId, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        productLikeService.addProductLike(productId, loggedInUser.getUserNO());
+        return ResponseEntity.ok("찜 추가 성공");
+    }
+
+    @DeleteMapping("/product/like/{productId}")
+    public ResponseEntity<String> removeProductLike(@PathVariable int productId, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+        }
+        productLikeService.removeProductLike(productId, loggedInUser.getUserNO());
+        return ResponseEntity.ok("찜 제거 성공");
+    }
+
+    @GetMapping("/likes")
+    public ResponseEntity<List<Product>> getLikedProducts(@RequestParam int userNo) {
+        try {
+            List<Product> likedProducts = productLikeService.getLikedProducts(userNo);
+            return ResponseEntity.ok(likedProducts);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(null); // 오류 발생 시 400 반환
+        }
+    }
+    // 찜 상태 확인
+    @GetMapping("/product/likes/{productId}")
+    public ResponseEntity<Map<String, Boolean>> checkProductLike(@PathVariable int productId, HttpSession session) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        int userNo = loggedInUser.getUserNO();
+        boolean isLiked = productLikeService.isProductLiked(productId, userNo);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("isLiked", isLiked);
+
+        return ResponseEntity.ok(response);
+    }
 
 
 }
-
-
-
-
-

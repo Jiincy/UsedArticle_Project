@@ -8,6 +8,7 @@ const ProductDetailList = () => {
     const [product, setProduct] = useState(null);
     const [currentUserNo, setCurrentUserNo] = useState(null);
     const [isOwner, setIsOwner] = useState(false);
+    const [isLiked, setIsLiked] = useState(false); // 찜 상태
     const [loading, setLoading] = useState(true); // 로딩 상태 추가
     const [isEditing, setIsEditing] = useState(false); // 수정 모드 상태
     const navigate = useNavigate(); // 페이지 이동을 위한 훅
@@ -27,6 +28,12 @@ const ProductDetailList = () => {
 
                     // 작성자와 현재 사용자가 같은지 확인
                     setIsOwner(userNo === productResponse.data.userNo);
+
+                    // 찜 여부 확인
+                    const likeResponse = await axios.get(`http://localhost:8787/api/product/likes/${productId}`, {
+                        params: { userNo }  // 서버에서 사용하지 않는다면 제거
+                    });
+                    setIsLiked(likeResponse.data.isLiked);
                 } else {
                     console.error('User number not found in sessionStorage.');
                 }
@@ -36,6 +43,7 @@ const ProductDetailList = () => {
                 setLoading(false); // 데이터 로딩 완료
             }
         };
+
 
         fetchData();
     }, [productId]);
@@ -83,6 +91,29 @@ const ProductDetailList = () => {
             ...prevProduct,
             [name]: value
         }));
+    };
+
+    const handleLikeToggle = async () => {
+        if (!currentUserNo) {
+            alert('로그인 후 찜하기 기능을 사용할 수 있습니다.');
+            return;
+        }
+
+        try {
+            if (isLiked) {
+                await axios.delete(`http://localhost:8787/api/product/like/${productId}`, {
+                    params: { userNo: currentUserNo }
+                });
+            } else {
+                await axios.post(`http://localhost:8787/api/product/like/${productId}`, {}, {
+                    params: { userNo: currentUserNo }
+                });
+            }
+            setIsLiked(!isLiked);
+        } catch (error) {
+            console.error('Error toggling like:', error);
+            alert('찜 상태 변경에 실패했습니다.');
+        }
     };
 
     if (loading) return <p>상품 정보를 불러오는 중입니다...</p>; // 로딩 상태 표시
@@ -155,8 +186,15 @@ const ProductDetailList = () => {
                         <p><strong>찜 갯수:</strong> {product.productLike}</p>
 
                         <div>
-                            <button onClick={handleEdit}>수정</button>
-                            <button onClick={handleDelete}>삭제</button>
+                            <button onClick={handleLikeToggle}>
+                                {isLiked ? '찜 취소' : '찜하기'}
+                            </button>
+                            {isOwner && (
+                                <>
+                                    <button onClick={handleEdit}>수정</button>
+                                    <button onClick={handleDelete}>삭제</button>
+                                </>
+                            )}
                         </div>
                     </>
                 )}

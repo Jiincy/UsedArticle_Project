@@ -4,8 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.sky.usedarticle.mapper.ProductMapper">
+
     <select id="getAllProducts" resultType="com.sky.usedarticle.dto.Product">
-            SELECT
+        SELECT
         product_id,
         user_no,
         product_name,
@@ -19,7 +20,7 @@
         product_like,
         product_addr,
         product_status
-            FROM Product
+        FROM product
     </select>
 
     <insert id="insertProduct" parameterType="com.sky.usedarticle.dto.Product">
@@ -37,7 +38,7 @@
     </insert>
 
     <select id="getProductById" parameterType="int" resultType="com.sky.usedarticle.dto.Product">
-    SELECT
+        SELECT
         product_id,
         user_no,
         product_name,
@@ -51,27 +52,42 @@
         product_like,
         product_addr,
         product_status
-        FROM Product
-        WHERE
-        product_id = #{productId}
+        FROM product
+        WHERE product_id = #{productId}
     </select>
 
+    <select id="getProductsByUserNo" parameterType="int" resultType="com.sky.usedarticle.dto.Product">
+        SELECT
+        product_id,
+        user_no,
+        product_name,
+        product_price,
+        product_info,
+        product_condition,
+        product_change,
+        product_date,
+        product_update_date,
+        product_delivery_free,
+        product_like,
+        product_addr,
+        product_status
+        FROM product
+        WHERE user_no = #{userNo}
+    </select>
 
     <select id="getProductOwnerNo" parameterType="int" resultType="int">
         SELECT user_no
-        FROM Product
+        FROM product
         WHERE product_id = #{productId}
     </select>
 
-    <!-- 상품 삭제 쿼리 -->
     <delete id="deleteProduct" parameterType="int">
-        DELETE FROM Product
+        DELETE FROM product
         WHERE product_id = #{productId}
     </delete>
 
-
     <update id="updateProduct">
-        UPDATE Product
+        UPDATE product
         SET product_name = #{productName},
         product_price = #{productPrice},
         product_info = #{productInfo},
