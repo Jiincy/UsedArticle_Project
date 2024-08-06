@@ -33,19 +33,18 @@ public class ProductService {
 
     // 세션에서 사용자 정보를 추출하고 권한 검증
 
-    public boolean isAuthorized(HttpSession session, int productId) {
-        User currentUser = (User) session.getAttribute("loggedInUser");
-        if (currentUser == null) {
-            return false; // 또는 다른 적절한 조치
-        }
-        int currentUserNo = currentUser.getUserNO();
-        int productOwnerNo = productMapper.getProductOwnerNo(productId);
-        return currentUserNo == productOwnerNo;
+    public int getProductOwnerNo(int productId) {
+        return productMapper.getProductOwnerNo(productId);
     }
 
 
     @Transactional
     public void deleteProduct(int productId) {
         productMapper.deleteProduct(productId);
+    }
+
+    @Transactional
+    public void modifyProduct(Product product) {
+        productMapper.updateProduct(product);
     }
 }

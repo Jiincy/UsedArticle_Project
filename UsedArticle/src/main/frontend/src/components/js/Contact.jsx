@@ -7,6 +7,7 @@ const Contact = () => {
   const [newQuestion, setNewQuestion] = useState('');
   const [newAnswer, setNewAnswer] = useState({});
 
+  // 문의 사항과 답변 데이터 가져오기
   useEffect(() => {
     axios.get('http://localhost:8787/api/questions')
       .then(response => {
@@ -17,6 +18,7 @@ const Contact = () => {
       });
   }, []);
 
+  // 문의 등록 처리
   const handleQuestionSubmit = (e) => {
     e.preventDefault();
     axios.post('http://localhost:8787/api/questions', { question: newQuestion })
@@ -29,10 +31,13 @@ const Contact = () => {
       });
   };
 
+  // 답변 등록 처리
   const handleAnswerSubmit = (questionId, answer) => {
     axios.post(`http://localhost:8787/api/questions/${questionId}/answers`, { answer })
       .then(response => {
-        setQuestions(questions.map(q => q.id === questionId ? response.data : q));
+        setQuestions(questions.map(q =>
+          q.id === questionId ? { ...q, answers: [...q.answers, response.data] } : q
+        ));
         setNewAnswer({ ...newAnswer, [questionId]: '' });
       })
       .catch(error => {
@@ -58,7 +63,7 @@ const Contact = () => {
             <div className="answers">
               {question.answers.map((answer, index) => (
                 <div key={index} className="answer-item">
-                  <p>{answer}</p>
+                  <p>{answer.answer}</p>
                 </div>
               ))}
               <textarea

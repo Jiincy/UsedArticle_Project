@@ -21,4 +21,6 @@ public interface ProductMapper {
 
     void deleteProduct(@Param("productId") int productId);
 
+    void updateProduct(Product product);
+
 }

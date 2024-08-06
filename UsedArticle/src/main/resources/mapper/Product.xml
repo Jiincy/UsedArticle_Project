@@ -56,15 +56,31 @@
         product_id = #{productId}
     </select>
 
-    <select id="getProductOwnerNo" resultType="int">
+
+    <select id="getProductOwnerNo" parameterType="int" resultType="int">
         SELECT user_no
         FROM Product
         WHERE product_id = #{productId}
     </select>
 
-    <delete id="deleteProduct">
+    <!-- 상품 삭제 쿼리 -->
+    <delete id="deleteProduct" parameterType="int">
         DELETE FROM Product
         WHERE product_id = #{productId}
     </delete>
+
+
+    <update id="updateProduct">
+        UPDATE Product
+        SET product_name = #{productName},
+        product_price = #{productPrice},
+        product_info = #{productInfo},
+        product_condition = #{productCondition},
+        product_change = #{productChange},
+        product_delivery_free = #{productDeliveryFree},
+        product_addr = #{productAddr},
+        product_status = #{productStatus}
+        WHERE product_id = #{productId}
+    </update>
 
 </mapper>

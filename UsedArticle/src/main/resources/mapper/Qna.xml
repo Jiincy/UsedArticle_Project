@@ -1,0 +1,36 @@
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sky.usedarticle.mapper.QnaMapper">
+
+    <select id="getAllQuestions" resultType="com.sky.usedarticle.dto.Qna">
+        SELECT * FROM qna
+    </select>
+
+    <select id="getQuestionById" parameterType="int" resultType="com.sky.usedarticle.dto.Qna">
+        SELECT * FROM qna WHERE q_num = #{id}
+    </select>
+
+    <insert id="createQuestion" parameterType="com.sky.usedarticle.dto.Qna">
+        INSERT INTO qna (user_no, qna_title, qna_contents, qna_created, hit_cnt)
+        VALUES (#{userNo}, #{qnaTitle}, #{qnaContents}, #{qnaCreated}, #{hitCnt})
+    </insert>
+
+    <update id="updateQuestion" parameterType="com.sky.usedarticle.dto.Qna">
+        UPDATE qna
+        SET user_no = #{userNo},
+            qna_title = #{qnaTitle},
+            qna_contents = #{qnaContents},
+            qna_created = #{qnaCreated},
+            hit_cnt = #{hitCnt}
+        WHERE q_num = #{qNum}
+    </update>
+
+    <delete id="deleteQuestion" parameterType="int">
+        DELETE FROM qna WHERE q_num = #{id}
+    </delete>
+
+</mapper>

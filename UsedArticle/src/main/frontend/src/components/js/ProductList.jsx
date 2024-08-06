@@ -41,11 +41,11 @@ const ProductList = () => {
         console.error('User number not found in sessionStorage.');
     }
   };
-
+    //상세 페이지
   const handleProductClick = (productId) => {
     navigate(`/productdetail/${productId}`);
   };
-
+    //고객센터
   const handleContactClick = () => {
     navigate('/contact');
   };
@@ -80,7 +80,6 @@ const ProductList = () => {
               <h2>{product.productName}</h2>
               <p>{product.productInfo}</p>
               <p>가격: {product.productPrice}</p>
-              <p>카테고리: {product.productCategory}</p>
               <p>상태: {product.productCondition}</p>
             </div>
           ))

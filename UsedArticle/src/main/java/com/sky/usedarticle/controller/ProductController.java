@@ -46,15 +46,7 @@ public class ProductController {
             @RequestParam("productChange") String productChange,
             @RequestParam("productDeliveryFree") String productDeliveryFree,
             @RequestParam("productAddr") String productAddr,
-            @RequestParam("productStatus") String productStatus,
-            HttpSession session) {
-
-        User loggedInUser = (User) session.getAttribute("loggedInUser");
-        String currentUserNo = String.valueOf(loggedInUser != null ? loggedInUser.getUserNO() : null);
-
-        if (currentUserNo == null || !userNo.equals(currentUserNo)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to register this product");
-        }
+            @RequestParam("productStatus") String productStatus) {
 
         try {
             Product product = new Product();
@@ -88,17 +80,60 @@ public class ProductController {
     }
 
 
+    // 상품 삭제
     @DeleteMapping("/productdelete/{productId}")
-    public ResponseEntity<?> deleteProduct(@PathVariable int productId, HttpSession session) {
-        // 권한 검증
-        if (!productService.isAuthorized(session, productId)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("권한이 없습니다. 작성자만 삭제할 수 있습니다.");
+    public ResponseEntity<?> deleteProduct(@PathVariable int productId) {
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access");
         }
-        productService.deleteProduct(productId);
-        return ResponseEntity.noContent().build(); // 성공적으로 삭제됨
+
+        int currentUserNo = loggedInUser.getUserNO();
+        int productOwnerNo = productService.getProductOwnerNo(productId);
+
+        // 사용자 번호 비교
+        if (currentUserNo != productOwnerNo) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to delete this product");
+        }
+
+        try {
+            productService.deleteProduct(productId);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete product");
+        }
+    }
+
+
+    @PutMapping("/modify/{productId}")
+    public ResponseEntity<String> modifyProduct(
+            @PathVariable("productId") int productId,
+            @RequestBody Product product,
+            HttpSession session) {
+
+        User loggedInUser = (User) session.getAttribute("loggedInUser");
+        String currentUserNo = String.valueOf(loggedInUser != null ? loggedInUser.getUserNO() : null);
+
+        if (currentUserNo == null || productService.getProductOwnerNo(productId) != Integer.parseInt(currentUserNo)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Unauthorized to modify this product");
+        }
+
+        try {
+            product.setProductId(productId);
+            productService.modifyProduct(product);
+            return ResponseEntity.ok("Product modified successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to modify product: " + e.getMessage());
+        }
     }
 
 
 
-
 }
+
+
+
+
+
