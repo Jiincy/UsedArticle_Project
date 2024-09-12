@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="88a94064-e7b1-468f-a53b-5089aaf90d96" name="Changes" comment="" />
+    <list default="true" id="88a94064-e7b1-468f-a53b-5089aaf90d96" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/css/main.d3844794.css" beforeDir="false" afterPath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/css/main.d3844794.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/js/453.8ab44547.chunk.js" beforeDir="false" afterPath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/js/453.8ab44547.chunk.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/js/main.3b9b5758.js" beforeDir="false" afterPath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/js/main.3b9b5758.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/js/main.3b9b5758.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/UsedArticle/src/main/resources/static/static/js/main.3b9b5758.js.LICENSE.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,9 +20,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2j0WRkqKj4TQ38nYd0qy0tbIZoJ" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -23,7 +33,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "jincy",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/cy/Documents/GitHub/UsedArticleProject/UsedArticle"
+    "last_opened_file_path": "C:/Users/cy/Documents/GitHub/UsedArticleProject"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
