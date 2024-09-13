@@ -27,7 +27,7 @@ const Chat = () => {
                 }
             })
             .catch(error => {
-                console.error('로그인 사용자 정보 가져오기 오류:', error);
+                console.error('로그인 사용자 정보 가져오기 오류입니다.:', error);
                 navigate('/');
             });
 
